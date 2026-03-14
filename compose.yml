@@ -1,0 +1,16 @@
+services:
+  fistcommitdb:
+    image: ${DOCKER_IMAGE}
+    container_name: ${CONTAINER_NAME}
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${DB_PORT_EXTERNAL}:${DB_PORT_INTERNAL}"
+    volumes:
+      - firstCommitDbVolume:/var/lib/mysql
+
+volumes:
+  firstCommitDbVolume:
