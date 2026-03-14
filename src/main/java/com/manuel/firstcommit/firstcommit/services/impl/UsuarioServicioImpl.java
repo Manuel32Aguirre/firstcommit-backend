@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.manuel.firstcommit.firstcommit.models.entities.Rol;
 import com.manuel.firstcommit.firstcommit.repositories.RolRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +19,13 @@ import com.manuel.firstcommit.firstcommit.services.IUsuarioServicio;
 public class UsuarioServicioImpl implements IUsuarioServicio {
 
     @Autowired
-    public UsuarioRepositorio usuarioRepositorio;
+    private UsuarioRepositorio usuarioRepositorio;
 
     @Autowired
-    public RolRepositorio rolRepositorio;
+    private RolRepositorio rolRepositorio;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -29,6 +33,7 @@ public class UsuarioServicioImpl implements IUsuarioServicio {
         Optional<Rol> rolOptional = rolRepositorio.findByNombre(rol);
         if(rolOptional.isPresent()){
             usuario.setRol(rolOptional.get());
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
             return usuarioRepositorio.save(usuario);
         }else{
             throw new RuntimeException("Rol no encontrado en la base de datos");

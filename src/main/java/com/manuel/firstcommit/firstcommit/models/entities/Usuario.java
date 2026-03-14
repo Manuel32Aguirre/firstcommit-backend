@@ -47,4 +47,9 @@ public class Usuario {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
+
+    @PrePersist
+    public void prePersist(){
+        this.activo = false;
+    }
 }
